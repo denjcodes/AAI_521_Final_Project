@@ -7,17 +7,25 @@ detector = ASLDetector()
 
 def detect_asl(image):
     """Process image and detect ASL gesture."""
+    print(f"[INFO] detect_asl called - image type: {type(image)}, is None: {image is None}")
+
     if image is None or not isinstance(image, np.ndarray):
+        print(f"[WARN] Invalid input - rejecting image")
         return None, "Please provide an image (use Upload or capture from Webcam)"
+
+    print(f"[INFO] Image received - shape: {image.shape}, dtype: {image.dtype}")
 
     # Convert to RGB if needed
     if len(image.shape) == 2:
         image = cv2.cvtColor(image, cv2.COLOR_GRAY2RGB)
+        print(f"[INFO] Converted grayscale to RGB")
     elif len(image.shape) == 3 and image.shape[2] == 4:
         image = cv2.cvtColor(image, cv2.COLOR_RGBA2RGB)
+        print(f"[INFO] Converted RGBA to RGB")
 
     # Process image
     annotated_image, letter, confidence = detector.process_frame(image)
+    print(f"[INFO] Detection result - letter: {letter}, confidence: {confidence}")
 
     # Create result message
     if letter and letter != "Unknown":
@@ -27,6 +35,7 @@ def detect_asl(image):
     else:
         result = "No hand detected. Please show a clear hand gesture."
 
+    print(f"[INFO] Returning result: {result}")
     return annotated_image, result
 
 
