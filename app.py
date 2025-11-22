@@ -7,8 +7,8 @@ detector = ASLDetector()
 
 def detect_asl(image):
     """Process image and detect ASL gesture."""
-    if image is None:
-        return None, "Please provide an image"
+    if image is None or not isinstance(image, np.ndarray):
+        return None, "Please provide an image (use Upload or capture from Webcam)"
 
     # Convert to RGB if needed
     if len(image.shape) == 2:
@@ -30,15 +30,9 @@ def detect_asl(image):
     return annotated_image, result
 
 # Create Gradio interface
-demo = gr.Interface(
-    fn=detect_asl,
-    inputs=gr.Image(sources=["upload"], type="numpy", label="Upload Image"),
-    outputs=[
-        gr.Image(label="Detected Hand Landmarks"),
-        gr.Textbox(label="Detection Result", lines=3)
-    ],
-    title="ASL Hand Detection System",
-    description="""
+with gr.Blocks(title="ASL Hand Detection System") as demo:
+    gr.Markdown("""
+    # ASL Hand Detection System
     American Sign Language hand gesture detection using MediaPipe.
 
     **Supported Gestures:**
@@ -47,11 +41,27 @@ demo = gr.Interface(
     - B: All fingers extended, thumb tucked
     - 1: Index finger only extended
     - W: Index, middle, and ring fingers extended
+    """)
 
-    Upload an image to detect ASL gestures!
-    """,
-    live=False
-)
+    with gr.Row():
+        with gr.Column():
+            input_image = gr.Image(
+                sources=["upload", "webcam"],
+                type="numpy",
+                label="Input Image",
+                interactive=True
+            )
+            submit_btn = gr.Button("Detect ASL Gesture", variant="primary")
+
+        with gr.Column():
+            output_image = gr.Image(label="Detected Hand Landmarks")
+            output_text = gr.Textbox(label="Detection Result", lines=3)
+
+    submit_btn.click(
+        fn=detect_asl,
+        inputs=input_image,
+        outputs=[output_image, output_text]
+    )
 
 if __name__ == "__main__":
     demo.launch()

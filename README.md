@@ -39,12 +39,22 @@ uv run python app.py
 
 The application will be available at `http://localhots:7860`
 ```
+## Testing
+
+**Stop server:** `Ctrl+C`
+```bash
+# To kill previous instances of the run:
+pkill -f "app.py" && sleep 1 && ps aux | grep "app.py" | grep -v grep
+
+# Run the application
+uv run python app.py
+```
 
 ## Technical Stack
 
 - **Hand Detection**: MediaPipe Hands (v0.10.9)
 - **Classification**: Rule-based finger extension analysis
 - **Frontend**: Gradio
-- **Image Processing**: OpenCV and NumPy
+- **Image Processing**: OpenCV, NumPy, CNN (TBD)
 - **Package Management**: UV for reproducible builds
 ---
