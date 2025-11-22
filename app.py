@@ -29,7 +29,8 @@ def detect_asl(image):
 
     return annotated_image, result
 
-# Create Gradio interface
+
+# Create Gradio interface with tabs
 with gr.Blocks(title="ASL Hand Detection System") as demo:
     gr.Markdown("""
     # ASL Hand Detection System
@@ -43,25 +44,75 @@ with gr.Blocks(title="ASL Hand Detection System") as demo:
     - W: Index, middle, and ring fingers extended
     """)
 
-    with gr.Row():
-        with gr.Column():
-            input_image = gr.Image(
-                sources=["upload", "webcam"],
-                type="numpy",
-                label="Input Image",
-                interactive=True
+    with gr.Tabs():
+        with gr.Tab("Take a Picture"):
+            with gr.Row():
+                with gr.Column():
+                    webcam_input = gr.Image(
+                        sources=["webcam"],
+                        type="numpy",
+                        label="Webcam",
+                        interactive=True
+                    )
+                    webcam_btn = gr.Button("Detect Gesture", variant="primary")
+
+                with gr.Column():
+                    webcam_output = gr.Image(label="Detected Hand Landmarks")
+                    webcam_result = gr.Textbox(label="Detection Result", lines=3)
+
+            webcam_btn.click(
+                fn=detect_asl,
+                inputs=webcam_input,
+                outputs=[webcam_output, webcam_result]
             )
-            submit_btn = gr.Button("Detect ASL Gesture", variant="primary")
 
-        with gr.Column():
-            output_image = gr.Image(label="Detected Hand Landmarks")
-            output_text = gr.Textbox(label="Detection Result", lines=3)
+        with gr.Tab("Upload Image"):
+            with gr.Row():
+                with gr.Column():
+                    upload_input = gr.Image(
+                        sources=["upload"],
+                        type="numpy",
+                        label="Upload Image",
+                        interactive=True
+                    )
+                    upload_btn = gr.Button("Detect Gesture", variant="primary")
 
-    submit_btn.click(
-        fn=detect_asl,
-        inputs=input_image,
-        outputs=[output_image, output_text]
-    )
+                with gr.Column():
+                    upload_output = gr.Image(label="Detected Hand Landmarks")
+                    upload_result = gr.Textbox(label="Detection Result", lines=3)
+
+            upload_btn.click(
+                fn=detect_asl,
+                inputs=upload_input,
+                outputs=[upload_output, upload_result]
+            )
+
+        with gr.Tab("Live Streaming"):
+            with gr.Row():
+                with gr.Column():
+                    stream_input = gr.Image(
+                        sources=["webcam"],
+                        type="numpy",
+                        label="Live Webcam Feed",
+                        interactive=True,
+                        streaming=True
+                    )
+
+                with gr.Column():
+                    stream_output = gr.Image(label="Detected Hand Landmarks")
+                    stream_result = gr.Textbox(label="Detection Result", lines=3)
+
+            stream_input.stream(
+                fn=detect_asl,
+                inputs=stream_input,
+                outputs=[stream_output, stream_result]
+            )
 
 if __name__ == "__main__":
-    demo.launch()
+    try:
+        print("[INFO] Starting ASL Hand Detection System...")
+        demo.launch()
+    except KeyboardInterrupt:
+        print("\n[INFO] Shutting down gracefully...")
+    finally:
+        print("[INFO] Application stopped")
