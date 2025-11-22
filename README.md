@@ -1,14 +1,3 @@
----
-title: AAI 521 - ASL Hand Detection
-colorFrom: blue
-colorTo: green
-sdk: gradio
-sdk_version: 5.50.0
-app_file: app.py
-pinned: false
-license: mit
----
-
 # AAI 521 - ASL Hand Detection System
 
 American Sign Language hand gesture detection using MediaPipe, Gradio and CNN (TBD).
