@@ -36,6 +36,8 @@ uv sync
 
 # Run the application
 uv run python app.py
+
+The application will be available at `http://localhots:7860`
 ```
 
 ## Technical Stack
