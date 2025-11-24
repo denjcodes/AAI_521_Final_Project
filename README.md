@@ -32,9 +32,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 uv sync
 
 # Run the application
-uv run python app.py
-
-The application will be available at `http://localhots:7860` (and can be killed gracefully with CTRL+C)
+uv run python app.py # (Kill with Ctrl+C to shutdown gracefully in linux environment)
 ```
 
 ## Technical Stack
@@ -44,5 +42,42 @@ The application will be available at `http://localhots:7860` (and can be killed 
 - **Frontend**: Gradio (with tabbed interface)
 - **Image Processing**: OpenCV, NumPy, CNN (TBD)
 - **Package Management**: UV for reproducible builds
-- **Logging**: Production-ready [INFO]/[WARN] logging- 
+- **Logging**: Production-ready [INFO]/[WARN] logging
+---
+
+## Collab Setup (Use Your Own Branch)
+
+```bash
+# 1. Clone the repository
+git clone git@github.com:denjcodes/AAI_521_Final_Project.git
+cd AAI_521_Final_Project
+
+# 2. Add HuggingFace Space as a remote
+git remote add hf git@hf.co:spaces/d2j666/AAI_521_Final_Project
+
+# 3. Verify remotes
+git remote -v
+
+# Create and switch to your branch
+git checkout -b <your-branch>
+
+# Pull latest from main
+git pull origin main
+
+# Make changes
+git add .
+git commit -m "Message"
+
+# Push your branch to GitHub
+git push origin <your-branch>
+
+# Deploy your branch to HF main (only when ready)
+git push hf <your-branch>:main
+```
+
+---
+### SSH Prerequisites
+Before cloning or pushing via SSH:
+- GitHub ->  Settings -> SSH and GPG Keys -> New SSH Key
+- HuggingFace -> Settings -> SSH Keys -> Add SSH Key
 ---
