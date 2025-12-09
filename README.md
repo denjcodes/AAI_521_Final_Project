@@ -17,6 +17,8 @@ American Sign Language hand gesture detection using MediaPipe, Gradio and CNN (T
 
 This application detects and classifies basic static ASL gestures using MediaPipe Hands for hand landmark detection and a rule-based classifier for gesture recognition.
 
+**Demo Project:** https://huggingface.co/spaces/d2j666/AAI_521_Final_Project
+
 Features:
 - Three input modes: Webcam snapshot, Image upload, and Live streaming
 - Real-time hand landmark visualization
